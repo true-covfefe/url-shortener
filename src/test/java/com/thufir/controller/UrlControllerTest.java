@@ -1,7 +1,6 @@
 package com.thufir.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.hash.Hashing;
 import com.thufir.UrlshortenerApplication;
 import com.thufir.entity.HashUrl;
 import com.thufir.repository.HashUrlRepository;
@@ -19,10 +18,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.thufir.utils.TestUtils.getSampleUrls;
+import static com.thufir.utils.TestUtils.hasher;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -93,9 +92,5 @@ public class UrlControllerTest {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         urls.stream().forEach(url -> builder.put(url, hasher(url)));
         return builder.build();
-    }
-
-    private String hasher(String url) {
-        return Hashing.md5().hashString(url, StandardCharsets.UTF_8).toString();
     }
 }

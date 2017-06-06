@@ -2,11 +2,8 @@ package com.thufir.repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.hash.Hashing;
 import com.thufir.UrlshortenerApplication;
 import com.thufir.entity.HashUrl;
-import com.thufir.repository.HashUrlRepository;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static com.thufir.utils.TestUtils.hasher;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,9 +51,5 @@ public class HashUrlRepositoryTest {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         urls.stream().forEach(url -> builder.put(url, hasher(url)));
         return builder.build();
-    }
-
-    private String hasher(String url) {
-        return Hashing.md5().hashString(url, StandardCharsets.UTF_8).toString();
     }
 }

@@ -89,6 +89,6 @@ public class UrlController {
     }
 
     private String hasher(String url) {
-        return Hashing.md5().hashString(url, StandardCharsets.UTF_8).toString();
+        return Hashing.murmur3_32().hashString(url, StandardCharsets.UTF_8).toString();
     }
 }
