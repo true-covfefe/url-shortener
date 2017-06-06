@@ -45,6 +45,8 @@ public class HashUrlRepositoryTest {
             assertEquals(saved, found);
             assertEquals(saved.getHash(), urlToHashMap.get(url));
         });
+
+        assertEquals(4, repo.findAll().size());
     }
 
     private ImmutableMap<String, String> hashUrlMapBuilder(List<String> urls) {
