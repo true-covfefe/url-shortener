@@ -36,7 +36,7 @@ public class HashUrlRepositoryTest {
             "http://www.bbc.co.uk/science/space/solarsystem/sun_and_planets/earth", "http://berserk.wikia.com/wiki/Berserk_(2016_Anime)");
         ImmutableMap<String, String> urlToHashMap = hashUrlMapBuilder(healthyUrls);
 
-        healthyUrls.stream().forEach(url -> {
+        healthyUrls.forEach(url -> {
             HashUrl hashUrl = new HashUrl(urlToHashMap.get(url), url);
             HashUrl saved = repo.save(hashUrl);
 
@@ -51,7 +51,7 @@ public class HashUrlRepositoryTest {
 
     private ImmutableMap<String, String> hashUrlMapBuilder(List<String> urls) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        urls.stream().forEach(url -> builder.put(url, hasher(url)));
+        urls.forEach(url -> builder.put(url, hasher(url)));
         return builder.build();
     }
 }

@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class UrlControllerTest {
     @Autowired
-    WebApplicationContext webContext;
+    private WebApplicationContext webContext;
 
     @Autowired
     private HashUrlRepository repo;
@@ -52,7 +52,7 @@ public class UrlControllerTest {
         //Given
         ImmutableMap<String, String> urlToHashMap = hashUrlMapBuilder(getSampleUrls());
 
-        urlToHashMap.keySet().stream().forEach(k -> {
+        urlToHashMap.keySet().forEach(k -> {
             try {
                 //When
                 MvcResult result = mockMvc.perform(post("/")
@@ -73,7 +73,7 @@ public class UrlControllerTest {
         //Given
         ImmutableMap<String, String> urlToHashMap = hashUrlMapBuilder(getSampleUrls());
 
-        urlToHashMap.keySet().stream().forEach(url -> {
+        urlToHashMap.keySet().forEach(url -> {
             final String hash = urlToHashMap.get(url);
             repo.save(new HashUrl(urlToHashMap.get(url), url));
             try {

@@ -14,9 +14,9 @@ public class HashUrl {
     public String id;
 
     @Indexed
-    private String hash;
+    private final String hash;
 
-    private String url;
+    private final String url;
 
     public HashUrl(String hash, String url) {
         this.hash = hash;
