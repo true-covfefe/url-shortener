@@ -53,3 +53,4 @@ hashes, switched to Murmur32 instead.
 * Use multi-node MongoDB instead of single node
 * Containerize LB, Microservice and MongoDB layers and host them on cloud (AWS, Google Cloud or variant depending on 
 their ease of use for Docker Swarm support)
+* OVerall, this project is a good candidate for serverless architecture as well as scaling dramatically.
