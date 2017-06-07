@@ -90,7 +90,7 @@ public class UrlControllerTest {
 
     private ImmutableMap<String, String> hashUrlMapBuilder(List<String> urls) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        urls.stream().forEach(url -> builder.put(url, hasher(url)));
+        urls.forEach(url -> builder.put(url, hasher(url)));
         return builder.build();
     }
 }

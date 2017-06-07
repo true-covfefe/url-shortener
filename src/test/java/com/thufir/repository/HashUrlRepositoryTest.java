@@ -29,6 +29,20 @@ public class HashUrlRepositoryTest {
     }
 
     @Test
+    public void testFindById() {
+        HashUrl persisted = givenHashUrl();
+        HashUrl found = repo.findOne(persisted.id);
+        assertEquals(found, persisted);
+    }
+
+    @Test
+    public void testFindByHash() {
+        HashUrl persisted = givenHashUrl();
+        HashUrl found = repo.findByHash(persisted.getHash());
+        assertEquals(found, persisted);
+    }
+
+    @Test
     public void save() throws Exception {
         assertEquals(0, repo.findAll().size());
 
@@ -51,5 +65,9 @@ public class HashUrlRepositoryTest {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         urls.forEach(url -> builder.put(url, hasher(url)));
         return builder.build();
+    }
+
+    private HashUrl givenHashUrl() {
+        return repo.save(new HashUrl("1q2w3e4r", "http://www.yahoo.com"));
     }
 }

@@ -35,7 +35,8 @@ public class UrlController {
 
     private final Cache<String, String> cache;
     private final HashUrlRepository repository;
-    private static final Integer CACHE_LIMIT = 1000;
+    private static final Integer CACHE_MAX_SIZE = 1000;
+    private static final Integer CACHE_VALID_FOR = 30;
     private static final Logger LOG = getLogger(UrlController.class);
 
     @Autowired
@@ -43,12 +44,12 @@ public class UrlController {
         this.repository = repository;
 
         cache = CacheBuilder.newBuilder()
-            .maximumSize(CACHE_LIMIT)
-            .expireAfterWrite(10L, TimeUnit.MINUTES)
+            .maximumSize(CACHE_MAX_SIZE)
+            .expireAfterWrite(CACHE_VALID_FOR, TimeUnit.MINUTES)
             .recordStats()
             .build();
         //Fetch latest items in the size of CACHE_LIMIT from DB and populate the cache
-        cache.putAll(repository.findAll(new PageRequest(0, CACHE_LIMIT, new Sort(new Sort.Order(Sort.Direction.DESC, "id"))))
+        cache.putAll(repository.findAll(new PageRequest(0, CACHE_MAX_SIZE, new Sort(new Sort.Order(Sort.Direction.DESC, "id"))))
             .getContent().stream().collect(Collectors.toMap(HashUrl::getHash, HashUrl::getUrl)));
     }
 
@@ -81,11 +82,20 @@ public class UrlController {
 
         if (validator.isValid(url)) {
             final String hash = hasher(url);
-            Optional<HashUrl> optionalHashUrl = Optional.ofNullable(repository.findByUrl(url));
-            if (!optionalHashUrl.isPresent() || !optionalHashUrl.get().equals(new HashUrl(hash, url))) {
+            //Check cache first! If present and it's the same url, return fast without involving repo
+            Optional<String> optionalUrl = Optional.ofNullable(cache.getIfPresent(hash));
+            if (optionalUrl.isPresent() && optionalUrl.get().equals(url)) {
+                LOG.info("Input url {} found in cache", url);
+            } else {
+                Optional<HashUrl> optionalHashUrl = Optional.ofNullable(repository.findByHash(hash));
+                //If present yet we got the same hash for a different url from the repo (very unlikely yet possible)
+                if (optionalHashUrl.isPresent() && !optionalHashUrl.get().equals(new HashUrl(hash, url))) {
+                    //Delete the present entry in the db with the same hash. LRU philosophy, no country for old entry.
+                    repository.delete(repository.findByHash(hash));
+                }
                 repository.save(new HashUrl(hash, url));
+                cache.put(hash, url);
             }
-            cache.put(hash, url);
             return new ResponseEntity<>(baseUrl + "url/" + hash, HttpStatus.OK);
         } else {
             LOG.info("Input url {} is not valid", url);
