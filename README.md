@@ -1,7 +1,7 @@
 # Url-Shortener
 
 This service is used for shortening urls and when provided with the returned code, redirecting to the initial url. 
-Spring Boot framework was used for developing the service, MongoDB was used the persistence layer, but using another 
+Spring Boot framework was used for developing the service, MongoDB was used for the persistence layer, but using another 
 database JPA-compliant would prove to be quite easy. Guava and Apache-Commons are other dependencies utilized.
 
 ##### How it works
