@@ -9,6 +9,8 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,7 @@ public class UrlController {
 
     private final Cache<String, String> cache;
     private final HashUrlRepository repository;
+    private static final Integer CACHE_LIMIT = 1000;
     private static final Logger LOG = getLogger(UrlController.class);
 
     @Autowired
@@ -40,11 +43,13 @@ public class UrlController {
         this.repository = repository;
 
         cache = CacheBuilder.newBuilder()
-            .maximumSize(1000L)
+            .maximumSize(CACHE_LIMIT)
             .expireAfterWrite(10L, TimeUnit.MINUTES)
             .recordStats()
             .build();
-        cache.putAll(repository.findAll().stream().collect(Collectors.toMap(HashUrl::getHash, HashUrl::getUrl)));
+        //Fetch latest items in the size of CACHE_LIMIT from DB and populate the cache
+        cache.putAll(repository.findAll(new PageRequest(0, CACHE_LIMIT, new Sort(new Sort.Order(Sort.Direction.DESC, "id"))))
+            .getContent().stream().collect(Collectors.toMap(HashUrl::getHash, HashUrl::getUrl)));
     }
 
     @RequestMapping(value = "/url/{code}", method = RequestMethod.GET)
