@@ -1,6 +1,6 @@
 # Url-Shortener
 
-This service is used for shortening urls and when provided with the returned code, redirects to the initial url. 
+This service is used for shortening urls and when provided with the returned code, redirecting to the initial url. 
 Spring Boot framework was used for developing the service, MongoDB was used the persistence layer, but using another 
 database JPA-compliant would prove to be quite easy. Guava and Apache-Commons are other dependencies utilized.
 
@@ -40,7 +40,7 @@ into a browser's address bar and entered, the request will be directed to `http:
 * Initially, developed a post endpoint that accepted any url after the service's url, without the need for a 
 post body such as: `http://localhost:8080/http://bbc.co.uk`. The service also worked fine this way but 
 problem was that while writing unit tests, the `DispatcherServlet` was deleting one of the slahes in the entered 
-url. So `http://bbc.co.uk` was becoming `http:/bbc.co.uk`. Working around this issue would mean throwing awy 
+url. So `http://bbc.co.uk` was becoming `http:/bbc.co.uk`. Working around this issue would mean throwing away 
 validation, so switched to using body instead.
 * MD5 was used initially for hashing the url. UUID would also have worked fine but seeing the length of the returned 
 hashes, switched to Murmur32 instead.
