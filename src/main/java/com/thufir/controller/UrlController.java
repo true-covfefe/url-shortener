@@ -91,7 +91,8 @@ public class UrlController {
                 //If present yet we got the same hash for a different url from the repo (very unlikely yet possible)
                 if (optionalHashUrl.isPresent() && !optionalHashUrl.get().equals(new HashUrl(hash, url))) {
                     //Delete the present entry in the db with the same hash. LRU philosophy, no country for old entry.
-                    repository.delete(repository.findByHash(hash));
+                    LOG.info("Another url {} with same hash {} found in db. Deleting! ", optionalHashUrl.get().getUrl(), hash);
+                    repository.delete(optionalHashUrl.get().getId());
                 }
                 repository.save(new HashUrl(hash, url));
                 cache.put(hash, url);

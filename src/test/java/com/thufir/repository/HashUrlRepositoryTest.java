@@ -31,7 +31,7 @@ public class HashUrlRepositoryTest {
     @Test
     public void testFindById() {
         HashUrl persisted = givenHashUrl();
-        HashUrl found = repo.findOne(persisted.id);
+        HashUrl found = repo.findOne(persisted.getId());
         assertEquals(found, persisted);
     }
 
@@ -52,7 +52,7 @@ public class HashUrlRepositoryTest {
             HashUrl hashUrl = new HashUrl(urlToHashMap.get(url), url);
             HashUrl saved = repo.save(hashUrl);
 
-            HashUrl found = repo.findOne(saved.id);
+            HashUrl found = repo.findOne(saved.getId());
             assertEquals(saved.getId(), found.getId());
             assertEquals(saved, found);
             assertEquals(saved.getHash(), urlToHashMap.get(url));

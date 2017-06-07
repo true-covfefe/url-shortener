@@ -11,7 +11,7 @@ import java.util.Objects;
 public class HashUrl {
 
     @Id
-    public String id;
+    private String id;
 
     @Indexed
     private final String hash;
