@@ -14,7 +14,8 @@ file should be changed to the address of the mongodb instance. A mongodb instanc
 used for the following application property. `spring.data.mongodb.uri=mongodb://192.168.99.100:32775/urlshortener`
 
 * Another method for running the application is after running `mvn clean install` in the root folder of the project, the 
-following command can be executed:
+following command can be executed, after updating the `192.168.99.100:32769` with your local MongoDB instance access params.
+This would override the mongodb `url:port` definition in the `application.properties` file.
 
 `java -Dspring.data.mongodb.uri=mongodb://192.168.99.100:32769/urlshortener -jar target/url-shortener-0.0.1-SNAPSHOT.jar`
 
