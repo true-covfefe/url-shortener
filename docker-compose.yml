@@ -1,0 +1,18 @@
+version: '2'
+services:
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - url-shortener
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+  url-shortener:
+    build: .
+    links:
+      - mongodb
+    environment:
+      spring.data.mongodb.uri: "mongodb://mongodb/urlshortener"
+  mongodb:
+    image: mongo
