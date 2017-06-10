@@ -19,6 +19,11 @@ This would override the mongodb `url:port` definition in the `application.proper
 
 `java -Dspring.data.mongodb.uri=mongodb://192.168.99.100:32769/urlshortener -jar target/url-shortener-0.0.1-SNAPSHOT.jar`
 
+##### Running on AWS
+
+`http://54.148.141.41` is up & running on AWS EC2 with a haProxy load-balancer in front, 3 worker nodes and a mongodb all together.
+
+**[Read more](src/main/resources/doc/aws.md)**
 
 ##### `POST`
 
