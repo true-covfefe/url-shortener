@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
   url-shortener:
-    build: .
+    image: zekaidis/url-shortener
     links:
       - mongodb
     environment:
