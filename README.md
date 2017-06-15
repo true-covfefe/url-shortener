@@ -55,8 +55,8 @@ hashes, switched to Murmur32 instead.
 ### Possible Improvements
 
 * Instead of using embedded Cache (Guava), move the logic to outside of the container and utilize Memcache or variant.
-* Use a load balancer in front like HaProxy for distributing the load between worker nodes when scaled.
+* ~~Use a load balancer in front like HaProxy for distributing the load between worker nodes when scaled.~~ - DONE!
 * Use multi-node MongoDB instead of single node
-* Containerize LB, Microservice and MongoDB layers and host them on cloud (AWS, Google Cloud or variant depending on 
-their ease of use for Docker Swarm support)
+* ~~Containerize LB, Microservice and MongoDB layers and host them on cloud (AWS, Google Cloud or variant depending on 
+their ease of use for Docker Swarm support)~~ - DONE!
 * Overall, this project is a good candidate for serverless architecture as well as scaling dramatically.
